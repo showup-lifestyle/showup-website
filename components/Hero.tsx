@@ -1,11 +1,11 @@
 export function Hero() {
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted px-4">
-      <div className="text-center max-w-4xl">
-        <h1 className="text-4xl md:text-6xl font-serif font-bold text-foreground mb-6">
+      <div className="text-center max-w-4xl animate-fade-in-up">
+        <h1 className="text-5xl md:text-7xl font-serif font-bold text-foreground mb-6">
           Showup: Turn Challenges into Commitments
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+        <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Deposit funds, invite friends as guarantors, and stay accountable. Escrow via crypto (USDC/USDT) or fiat (Apple Pay).
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -7,80 +7,77 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground">
       <Hero />
 
-      {/* How It Works */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <StepCard
-              step={1}
-              title="Terms & Services"
-              description="First-time users: Accept terms and verify identity via Evernym Verity for decentralized credentials."
-            />
-            <StepCard
-              step={2}
-              title="AI Conversation"
-              description="Chat with AI to brainstorm and define your behavioral challenge."
-            />
-            <StepCard
-              step={3}
-              title="Definitions"
-              description="Specify your challenge details."
-              details={[
-                "What: Define behavioral goals for internalization.",
-                "How: Specify friend confirmation method.",
-                "Who: Choose deposit amount, link to friend's challenge.",
-                "Consistency: Set notifications and reminders.",
-                "When: Define activity frequency."
-              ]}
-            />
-            <StepCard
-              step={4}
-              title="Sharing"
-              description="Share challenge link with friends. They can view and buy shares to incentivize you."
-            />
-            <StepCard
-              step={5}
-              title="Deposit"
-              description="Pay via Bitcart (crypto: USDC/USDT) or Stripe (fiat: Apple Pay). Funds escrowed securely."
-            />
-            <StepCard
-              step={6}
-              title="Verification & Completion"
-              description="Friends attest via Verity credentials. Success releases funds; failure rewards sharers."
-            />
+       {/* How It Works */}
+       <section className="py-16 px-4">
+         <div className="max-w-6xl mx-auto">
+           <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12 animate-fade-in-left">How It Works</h2>
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-left">
+              <StepCard
+                step={1}
+                title="Terms & Services"
+                description="First-time users: Accept terms and verify identity via Evernym Verity for decentralized credentials."
+              />
+              <StepCard
+                step={2}
+                title="AI Conversation"
+                description="Chat with AI to brainstorm and define your behavioral challenge."
+              />
+              <StepCard
+                step={3}
+                title="Definitions"
+                description="Specify your challenge details."
+                details={[
+                  "What: Define behavioral goals for internalization.",
+                  "How: Specify friend confirmation method.",
+                  "Who: Choose deposit amount, link to friend's challenge.",
+                  "Consistency: Set notifications and reminders.",
+                  "When: Define activity frequency."
+                ]}
+              />
+              <StepCard
+                step={4}
+                title="Sharing"
+                description="Share challenge link with friends. They can view and buy shares to incentivize you."
+              />
+              <StepCard
+                step={5}
+                title="Deposit"
+                description="Pay via Bitcart (crypto: USDC/USDT) or Stripe (fiat: Apple Pay). Funds escrowed securely."
+              />
+              <StepCard
+                step={6}
+                title="Verification & Completion"
+                description="Friends attest via Verity credentials. Success releases funds; failure rewards sharers."
+              />
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-16 px-4 bg-muted">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12">Key Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard
-              title="Crypto & Fiat Escrow"
-              description="Secure deposits with blockchain escrow or traditional payments."
-              icon="🔐"
-            />
-            <FeatureCard
-              title="Decentralized Verification"
-              description="Friends confirm completion using verifiable credentials."
-              icon="✅"
-            />
-            <FeatureCard
-              title="Social Incentives"
-              description="Friends buy shares to motivate you, with real stakes."
-              icon="👥"
-            />
+       {/* Features */}
+       <section className="py-16 px-4 bg-muted">
+         <div className="max-w-6xl mx-auto">
+           <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12 animate-fade-in-right">Key Features</h2>
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-fade-in-right">
+              <FeatureCard
+                title="Crypto & Fiat Escrow"
+                description="Secure deposits with blockchain escrow or traditional payments."
+              />
+              <FeatureCard
+                title="Decentralized Verification"
+                description="Friends confirm completion using verifiable credentials."
+              />
+              <FeatureCard
+                title="Social Incentives"
+                description="Friends buy shares to motivate you, with real stakes."
+              />
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12">FAQ</h2>
+       {/* FAQ */}
+       <section className="py-16 px-4">
+         <div className="max-w-4xl mx-auto">
+           <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12 animate-fade-in-left">FAQ</h2>
           <div className="space-y-6">
             <details className="neumorphic p-4 rounded-lg">
               <summary className="font-semibold cursor-pointer">How do crypto wallets work?</summary>
