@@ -4,7 +4,7 @@
 
 Only if first time on the app
 
-## Ai conversation
+## AI conversation
 
 Have a conversation with Ai to decide on the best challenge
 
@@ -26,10 +26,13 @@ the user should go ahead and start.
 4. Notifications (Consistency)
    i. This should help make the user understand that this is something help
    will be living with
-5. Activity rate (When)
+5. Activity rate (When/How long)
    i. What is the rate the activity will be done.
    ii. This shows how serious the user will be
+   iii. Length of the challenge. Challenge will not end until this time has passed
 
 ## Sharing
 
 Sharing is an important part of the challenge. It provides accountability and strengthens your bond with your friends. You have to share the challenge to be able to start it.
+
+Defined in the guarantor-model
