@@ -13,4 +13,4 @@
 2. Configure webhook endpoint: `https://yourdomain.com/api/stripe/webhook`
 3. Subscribe to `crypto.onramp_session_updated` events
 
-- [ ] Apple pay works
+- [x] Apple pay works

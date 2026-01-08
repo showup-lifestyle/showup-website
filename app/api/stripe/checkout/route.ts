@@ -42,8 +42,10 @@ export async function POST(request: NextRequest) {
     const amountInCents = Math.round(amount * 100);
 
     // Create checkout session
+    // Note: Apple Pay is automatically available when using 'card' payment method
+    // and the customer is on a supported device with Apple Pay configured
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card", "apple_pay"],
+      payment_method_types: ["card"],
       line_items: [
         {
           price_data: {
@@ -65,11 +67,13 @@ export async function POST(request: NextRequest) {
       customer_email: customerEmail,
       metadata: {
         challengeId: challengeId || "",
+        type: "challenge_deposit",
         ...metadata,
       },
       payment_intent_data: {
         metadata: {
           challengeId: challengeId || "",
+          type: "challenge_deposit",
           ...metadata,
         },
       },

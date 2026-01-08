@@ -1,20 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
+import Stripe from "stripe";
+import {
+  createChallengeOnChain,
+  checkEscrowContract,
+  type CreateChallengeParams,
+} from "@/lib/web3/server/escrowService";
 
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 
-interface StripeEvent {
-  id: string;
-  type: string;
-  data: {
-    object: any; // Use any for different event types
-  };
-}
-
 /**
  * POST /api/stripe/webhook
- * Handles Stripe webhook events for crypto onramp
+ * Handles Stripe webhook events for payment completion
+ * 
+ * Flow:
+ * 1. User pays with credit card / Apple Pay via Stripe Checkout
+ * 2. Stripe sends webhook on payment completion
+ * 3. We create the smart contract challenge on-chain
+ * 4. User is redirected to success page with challenge details
  */
 export async function POST(request: NextRequest) {
   try {
@@ -27,20 +31,33 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Stripe not configured" }, { status: 500 });
     }
 
-    // In production, verify webhook signature
-    // For now, we'll parse the event directly
-    let event: StripeEvent;
+    const stripe = new Stripe(STRIPE_SECRET_KEY);
 
-    try {
-      event = JSON.parse(body);
-    } catch {
-      return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    // Verify webhook signature in production
+    let event: Stripe.Event;
+
+    if (STRIPE_WEBHOOK_SECRET && signature) {
+      try {
+        event = stripe.webhooks.constructEvent(body, signature, STRIPE_WEBHOOK_SECRET);
+      } catch (err) {
+        console.error("Webhook signature verification failed:", err);
+        return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+      }
+    } else {
+      // Development mode - parse event directly (not recommended for production)
+      try {
+        event = JSON.parse(body) as Stripe.Event;
+        console.warn("Webhook signature not verified - development mode only");
+      } catch {
+        return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+      }
     }
 
     // Handle different event types
     switch (event.type) {
       case "checkout.session.completed": {
-        const session = event.data.object;
+        const session = event.data.object as Stripe.Checkout.Session;
+        
         console.log("Checkout session completed:", {
           sessionId: session.id,
           paymentStatus: session.payment_status,
@@ -51,54 +68,20 @@ export async function POST(request: NextRequest) {
         });
 
         if (session.payment_status === "paid") {
-          // Payment successful
-          console.log("Payment successful for session:", session.id);
-          // TODO: Handle fiat payment completion
-          // For fiat payments, funds are escrowed in Stripe
-          // Update challenge status, notify user, etc.
+          // Payment successful - create smart contract challenge
+          await handleSuccessfulPayment(session);
         }
         break;
       }
 
-      case "crypto.onramp_session_updated": {
-        const session = event.data.object;
-        console.log("Onramp session updated:", {
-          sessionId: session.id,
-          status: session.status,
-          transactionDetails: session.transaction_details,
+      case "payment_intent.succeeded": {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        console.log("Payment intent succeeded:", {
+          paymentIntentId: paymentIntent.id,
+          amount: paymentIntent.amount,
+          metadata: paymentIntent.metadata,
         });
-
-        // Handle different statuses
-        switch (session.status) {
-          case "fulfillment_processing":
-            // Payment successful, crypto is being delivered
-            console.log("Onramp fulfillment processing:", session.id);
-            // TODO: Update database with pending status
-            break;
-
-          case "fulfillment_complete":
-            // Crypto delivered to wallet
-            console.log("Onramp fulfillment complete:", {
-              sessionId: session.id,
-              walletAddress: session.transaction_details?.wallet_address,
-              amount: session.transaction_details?.destination_amount,
-              currency: session.transaction_details?.destination_currency,
-              network: session.transaction_details?.destination_network,
-              txHash: session.transaction_details?.transaction_id,
-            });
-            // TODO: Update database and notify user
-            // TODO: Trigger challenge deposit flow if applicable
-            break;
-
-          case "rejected":
-            // User was rejected (KYC failure, fraud, etc.)
-            console.log("Onramp session rejected:", session.id);
-            // TODO: Notify user and update database
-            break;
-
-          default:
-            console.log("Unhandled onramp status:", session.status);
-        }
+        // Additional handling if needed
         break;
       }
 
@@ -117,28 +100,90 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * Verify Stripe webhook signature
- * Use this in production to ensure webhooks are from Stripe
+ * Handle successful payment and create on-chain challenge
  */
-async function verifyStripeSignature(
-  payload: string,
-  signature: string,
-  secret: string
-): Promise<boolean> {
-  const crypto = await import("crypto");
-
-  const timestamp = signature.split(",")[0]?.split("=")[1];
-  const sig = signature.split(",")[1]?.split("=")[1];
-
-  if (!timestamp || !sig) {
-    return false;
+async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
+  const metadata = session.metadata || {};
+  
+  // Check if this is a challenge deposit
+  if (metadata.type !== "challenge_deposit") {
+    console.log("Not a challenge deposit, skipping smart contract creation");
+    return;
   }
 
-  const signedPayload = `${timestamp}.${payload}`;
-  const expectedSignature = crypto
-    .createHmac("sha256", secret)
-    .update(signedPayload)
-    .digest("hex");
+  const challengeId = metadata.challengeId;
+  const challengeTitle = metadata.challengeTitle || "Challenge";
+  const challengeDuration = parseInt(metadata.challengeDuration || "30", 10);
+  const metadataUri = metadata.metadataUri || "";
+  const guarantorsJson = metadata.guarantors || "[]";
+  
+  let guarantors: string[] = [];
+  try {
+    guarantors = JSON.parse(guarantorsJson);
+  } catch {
+    console.error("Failed to parse guarantors:", guarantorsJson);
+  }
 
-  return sig === expectedSignature;
+  // Amount in dollars (session.amount_total is in cents)
+  const amountUSD = (session.amount_total || 0) / 100;
+
+  console.log("Processing challenge deposit:", {
+    challengeId,
+    challengeTitle,
+    amount: amountUSD,
+    duration: challengeDuration,
+    guarantors,
+    customerEmail: session.customer_details?.email,
+  });
+
+  // Check if escrow contract is deployed
+  const isContractDeployed = await checkEscrowContract();
+  
+  if (!isContractDeployed) {
+    console.warn("Escrow contract not deployed. Storing challenge for later processing.");
+    // TODO: Store challenge in database for processing when contract is deployed
+    // For now, log the details
+    console.log("Challenge pending on-chain creation:", {
+      challengeId,
+      stripeSessionId: session.id,
+      amount: amountUSD,
+      customerEmail: session.customer_details?.email,
+    });
+    return;
+  }
+
+  // Create challenge on-chain
+  const params: CreateChallengeParams = {
+    challengeId: challengeId || `challenge_${Date.now()}`,
+    userEmail: session.customer_details?.email || "",
+    amount: amountUSD,
+    durationDays: challengeDuration,
+    guarantorEmails: guarantors,
+    metadataUri,
+    challengeTitle,
+    stripeSessionId: session.id,
+    stripePaymentIntentId: session.payment_intent as string,
+  };
+
+  const result = await createChallengeOnChain(params);
+
+  if (result.success) {
+    console.log("Challenge created successfully:", {
+      challengeId: result.challengeId,
+      transactionHash: result.transactionHash,
+      blockNumber: result.blockNumber?.toString(),
+    });
+
+    // TODO: Store challenge mapping in database
+    // - Link Stripe session to on-chain challenge ID
+    // - Store user email for notifications
+    // - Send confirmation email to user
+    // - Send invitation emails to guarantors
+  } else {
+    console.error("Failed to create challenge on-chain:", result.error);
+    // TODO: Implement retry logic or manual review queue
+    // - Store failed challenge for retry
+    // - Alert admin for manual intervention
+    // - Potentially refund user if repeated failures
+  }
 }
