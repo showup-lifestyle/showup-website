@@ -14,3 +14,4 @@
 3. Subscribe to `crypto.onramp_session_updated` events
 
 - [x] Apple pay works
+- [ ] Ai should automate the process of creating the challenge

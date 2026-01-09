@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +16,7 @@ interface NavbarProps {
 }
 
 export function Navbar({ className }: NavbarProps) {
+  const router = useRouter();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const [loginData, setLoginData] = useState<AuthData>({ email: '', password: '' });
@@ -79,8 +81,9 @@ export function Navbar({ className }: NavbarProps) {
 
       setIsSignupOpen(false);
       setSignupData({ email: '', password: '', username: '' });
-      // TODO: Update app state to show user is logged in
-      window.location.reload(); // Simple refresh for now
+      
+      // Redirect new users to onboarding
+      router.push('/onboarding');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Signup failed');
     } finally {
