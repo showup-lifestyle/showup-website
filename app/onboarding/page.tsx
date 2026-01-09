@@ -1272,7 +1272,7 @@ export default function OnboardingPage() {
                           challengeDraft.notificationSettings?.reminderTime ||
                           "09:00"
                         }
-                        onChange={(e) =>
+                        onChange={(e) => {
                           setChallengeDraft((prev) => ({
                             ...prev,
                             notificationSettings: {
@@ -1281,27 +1281,25 @@ export default function OnboardingPage() {
                               ...prev.notificationSettings,
                               reminderTime: e.target.value,
                             },
-                          }))
-                        }
+                          }));
+                        }}
                         className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all"
                       >
-                        <option value="06:00">6:00 AM</option>
-                        <option value="07:00">7:00 AM</option>
-                        <option value="08:00">8:00 AM</option>
-                        <option value="09:00">9:00 AM</option>
-                        <option value="10:00">10:00 AM</option>
-                        <option value="11:00">11:00 AM</option>
-                        <option value="12:00">12:00 PM</option>
-                        <option value="13:00">1:00 PM</option>
-                        <option value="14:00">2:00 PM</option>
-                        <option value="15:00">3:00 PM</option>
-                        <option value="16:00">4:00 PM</option>
-                        <option value="17:00">5:00 PM</option>
-                        <option value="18:00">6:00 PM</option>
-                        <option value="19:00">7:00 PM</option>
-                        <option value="20:00">8:00 PM</option>
-                        <option value="21:00">9:00 PM</option>
-                        <option value="22:00">10:00 PM</option>
+                        {Array.from({ length: 72 }, (_, i) => {
+                          const totalMinutes = 6 * 60 + i * 15; // Start at 6:00 AM
+                          const h = Math.floor(totalMinutes / 60);
+                          const m = totalMinutes % 60;
+                          const time24 = `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+                          const hour12 = h % 12 || 12;
+                          const ampm = h < 12 ? "AM" : "PM";
+                          const timeDisplay = `${hour12}:${m.toString().padStart(2, "0")} ${ampm}`;
+
+                          return (
+                            <option key={time24} value={time24}>
+                              {timeDisplay}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   </div>
@@ -1525,17 +1523,21 @@ export default function OnboardingPage() {
                     Number of Guarantors Desired
                   </label>
                   <input
-                    type="number"
-                    min="1"
-                    max="10"
-                    value={challengeDraft.guarantorsCount || 1}
-                    onChange={(e) =>
+                    type="text"
+                    value={
+                      challengeDraft.guarantorsCount
+                        ? challengeDraft.guarantorsCount.toString()
+                        : ""
+                    }
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/^1+/, ""); // remove leading ones
                       setChallengeDraft((prev) => ({
                         ...prev,
-                        guarantorsCount: parseInt(e.target.value) || 1,
-                      }))
-                    }
+                        guarantorsCount: val ? parseInt(val) : 1,
+                      }));
+                    }}
                     className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all"
+                    placeholder="1"
                   />
                 </div>
 
