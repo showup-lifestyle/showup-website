@@ -2,10 +2,12 @@ import { Hero } from "../components/Hero";
 import { FeatureCard } from "../components/FeatureCard";
 import Letter3DSwap from "../components/fancy/text/letter-3d-swap";
 import Timeline from "../components/Timeline";
+import { Navbar } from "../components/Navbar";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <Navbar />
       <Hero />
 
       {/* How It Works */}

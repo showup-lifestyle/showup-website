@@ -1,20 +1,46 @@
 services:
-  showup-website:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: showup-website
-    restart: unless-stopped
-    networks:
-      - proxy-net
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.showup-website.rule=Host(`showup.lifestyle`)"
-      - "traefik.http.routers.showup-website.entrypoints=web"
-      - "traefik.http.services.showup-website.loadbalancer.server.port=3000"
-      - "traefik.docker.network=proxy-net"
+  #showup-website:
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile
+  #  container_name: showup-website
+  #  restart: unless-stopped
+  #  depends_on:
+  #    postgres:
+  #      condition: service_healthy
+  #  environment:
+  #    - DATABASE_URL=postgresql://showup:showup_secret@postgres:5432/showup_db
+  #  networks:
+  #    - proxy-net
+  #    - internal
+  #  labels:
+  #    - "traefik.enable=true"
+  #    - "traefik.http.routers.showup-website.rule=Host(`showup.lifestyle`)"
+  #    - "traefik.http.routers.showup-website.entrypoints=web"
+  #    - "traefik.http.services.showup-website.loadbalancer.server.port=3000"
+  #    - "traefik.docker.network=proxy-net"
 
+  postgres:
+    image: postgres:18
+    container_name: showup-postgres
+    restart: unless-stopped
+    env_file:
+      - path: ./.env.local
+        required: true
+    volumes:
+      - /raid/data/showup_db:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "6666:5432"
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U showup -d showup_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 networks:
   proxy-net:
     external: true
-
+  internal:
+    driver: bridge

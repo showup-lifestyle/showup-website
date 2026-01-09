@@ -3,7 +3,7 @@ import VerticalCutReveal from "./fancy/text/vertical-cut-reveal";
 
 export function Hero() {
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 sm:px-8 lg:px-12 py-12 md:py-0">
+    <section className="min-h-screen flex items-center justify-center px-6 sm:px-8 lg:px-12 pt-24 pb-12 md:py-0">
       <div className="text-center max-w-5xl mx-auto animate-fade-in-up">
         {/* Logo */}
         <div className="flex justify-center mb-6 md:mb-8">
