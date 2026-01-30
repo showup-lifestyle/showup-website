@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Crimson_Text } from "next/font/google";
-import { Web3Provider } from "@/lib/web3/provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,15 +19,16 @@ const crimsonText = Crimson_Text({
 });
 
 export const metadata: Metadata = {
-  title: "Showup - Personal Challenges with Real Stakes",
-  description: "Create accountable challenges with deposits and friends. Fiat or crypto-backed escrow for motivation.",
+  title: "Showup - Waitlist",
+  description:
+    "Join the Showup waitlist and be the first to access accountability challenges.",
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/showup-icon.svg', type: 'image/svg+xml' },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/showup-icon.svg", type: "image/svg+xml" },
     ],
-    shortcut: '/favicon.ico',
-    apple: '/showup-icon.svg',
+    shortcut: "/favicon.ico",
+    apple: "/showup-icon.svg",
   },
 };
 
@@ -39,17 +39,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/showup-icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/showup-icon.svg" />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${crimsonText.variable} antialiased`}
       >
-        <Web3Provider>
-          {children}
-        </Web3Provider>
+        {children}
       </body>
     </html>
   );

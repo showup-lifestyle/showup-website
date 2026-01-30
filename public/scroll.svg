@@ -1,9 +1,0 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <g>
-    <path d="M20 30 Q20 20 30 20 L70 20 Q80 20 80 30 L80 70 Q80 80 70 80 L30 80 Q20 80 20 70 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-    <line x1="20" y1="35" x2="80" y2="35" stroke="currentColor" stroke-width="1"/>
-    <line x1="20" y1="40" x2="80" y2="40" stroke="currentColor" stroke-width="1"/>
-    <line x1="20" y1="45" x2="80" y2="45" stroke="currentColor" stroke-width="1"/>
-    <animateTransform attributeName="transform" type="scale" dur="2.5s" repeatCount="indefinite" values="1;1.05;1" />
-  </g>
-</svg>

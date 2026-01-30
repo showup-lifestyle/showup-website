@@ -1,8 +1,0 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <g>
-    <path d="M50 20 L60 30 L55 30 L55 45 L45 45 L45 30 L40 30 Z" fill="currentColor"/>
-    <path d="M30 50 L20 40 L25 40 L25 25 L35 25 L35 40 L40 40 Z" fill="currentColor"/>
-    <path d="M70 50 L80 40 L75 40 L75 25 L65 25 L65 40 L60 40 Z" fill="currentColor"/>
-    <animateTransform attributeName="transform" type="scale" dur="2s" repeatCount="indefinite" values="1;1.05;1" />
-  </g>
-</svg>

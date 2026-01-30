@@ -1,24 +1,24 @@
 services:
-  #showup-website:
-  #  build:
-  #    context: .
-  #    dockerfile: Dockerfile
-  #  container_name: showup-website
-  #  restart: unless-stopped
-  #  depends_on:
-  #    postgres:
-  #      condition: service_healthy
-  #  environment:
-  #    - DATABASE_URL=postgresql://showup:showup_secret@postgres:5432/showup_db
-  #  networks:
-  #    - proxy-net
-  #    - internal
-  #  labels:
-  #    - "traefik.enable=true"
-  #    - "traefik.http.routers.showup-website.rule=Host(`showup.lifestyle`)"
-  #    - "traefik.http.routers.showup-website.entrypoints=web"
-  #    - "traefik.http.services.showup-website.loadbalancer.server.port=3000"
-  #    - "traefik.docker.network=proxy-net"
+  showup-website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: showup-website
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://showup:showup_secret@postgres:5432/showup_db
+    networks:
+      - proxy-net
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.showup-website.rule=Host(`showup.lifestyle`)"
+      - "traefik.http.routers.showup-website.entrypoints=web"
+      - "traefik.http.services.showup-website.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy-net"
 
   postgres:
     image: postgres:18
