@@ -2,6 +2,10 @@
 
 A single-page landing site that collects waitlist signups and sends a confirmation email.
 
+## Product Alignment
+
+This waitlist site supports the ShowUp app, which uses **image-only daily submissions** (16:9 portrait format) for challenge verification. All copy and messaging should reflect this image-only policy per PROJECT.md specifications.
+
 ## Getting Started
 
 1. Install dependencies:
