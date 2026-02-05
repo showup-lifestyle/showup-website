@@ -10,7 +10,7 @@ services:
       - "3302:3000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.showup-website.rule=Host(`showup.lifestyle`)"
+      - "traefik.http.routers.showup-website.rule=Host(`www.showup.lifestyle`)"
       - "traefik.http.routers.showup-website.entrypoints=web"
       - "traefik.http.services.showup-website.loadbalancer.server.port=3000"
       - "traefik.docker.network=proxy-net"
