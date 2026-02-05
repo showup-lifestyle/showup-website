@@ -3,10 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: 'standalone',
   
-  // Image optimization for SEO
+  // Image optimization for SEO (using built-in Next.js optimizer)
   images: {
-    formats: ['image/webp', 'image/avif'],
+    formats: ['image/webp'],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    // Disable sharp - use Next.js built-in optimizer
+    unoptimized: false,
   },
   
   // Compression for faster loading
