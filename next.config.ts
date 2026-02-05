@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/:path*',
         headers: [
           {
             key: 'X-Frame-Options',
@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/(.*\\.(jpg|jpeg|gif|png|svg|ico|webp|avif))',
+        source: '/:path*.:ext(jpg|jpeg|gif|png|svg|ico|webp|avif)',
         headers: [
           {
             key: 'Cache-Control',
