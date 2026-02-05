@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Showup Open Graph Image</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width: 1200px;
+      height: 630px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #fff2d6 0%, transparent 55%),
+                  radial-gradient(circle at bottom, #e6f5ff 0%, transparent 60%),
+                  linear-gradient(135deg, #fff7eb 0%, #f6f1ff 55%, #e8f3ff 100%);
+      font-family: 'Crimson Text', Georgia, serif;
+    }
+    .container {
+      text-align: center;
+      padding: 60px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: rgba(255,255,255,0.7);
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-size: 18px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #666;
+      margin-bottom: 40px;
+    }
+    .badge-dot {
+      width: 12px;
+      height: 12px;
+      background: #10b981;
+      border-radius: 50%;
+    }
+    .logo {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 30px;
+    }
+    .headline {
+      font-size: 72px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: #1a1a1a;
+      max-width: 900px;
+      margin: 0 auto 20px;
+    }
+    .subheadline {
+      font-size: 32px;
+      color: #666;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .url {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      color: #999;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">
+      <div class="badge-dot"></div>
+      Join the waitlist
+    </div>
+    <svg class="logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="45" fill="#F5F5F5" stroke="#E5E5E5" stroke-width="1"/>
+      <circle cx="50" cy="50" r="35" fill="url(#gradient1)"/>
+      <defs>
+        <linearGradient id="gradient1" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#FFD166"/>
+          <stop offset="1" stop-color="#06D6A0"/>
+        </linearGradient>
+      </defs>
+      <path d="M35 50L45 60L65 40" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h1 class="headline">Show up for your goals</h1>
+    <p class="subheadline">Real accountability for real results</p>
+  </div>
+  <div class="url">showup.app</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# robots.txt for Showup
+# https://showup.app
+
+User-agent: *
+Allow: /
+
+# Block any potential admin or private routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+
+# Sitemap location
+Sitemap: https://showup.app/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1

@@ -1,5 +1,17 @@
 import Image from "next/image";
 import WaitlistForm from "@/components/WaitlistForm";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Showup - Show up for your goals with real accountability",
+  description:
+    "Join the Showup waitlist and be the first to access accountability challenges that turn personal goals into real commitments. Early access. No spam. Ever.",
+  openGraph: {
+    title: "Showup - Show up for your goals with real accountability",
+    description:
+      "Join the Showup waitlist and be the first to access accountability challenges that turn personal goals into real commitments.",
+  },
+};
 
 export default function Home() {
   return (
@@ -13,10 +25,11 @@ export default function Home() {
         <div className="mt-10 flex items-center justify-center">
           <Image
             src="/showup-icon.svg"
-            alt="Showup"
+            alt="Showup logo - Accountability challenges platform"
             width={88}
             height={88}
             className="drop-shadow-md"
+            priority
           />
         </div>
 

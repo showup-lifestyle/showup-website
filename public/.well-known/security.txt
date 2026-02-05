@@ -1,0 +1,4 @@
+Contact: security@showup.app
+Acknowledgments: https://showup.app/security/hall-of-fame
+Preferred-Languages: en
+Canonical: https://showup.app/.well-known/security.txt
