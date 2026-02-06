@@ -46,6 +46,16 @@ export default function Home() {
         <p className="mt-6 text-xs uppercase tracking-[0.3em] text-muted-foreground/70">
           Early access. No spam. Ever.
         </p>
+
+        <footer className="mt-16 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground/60">
+          <a href="/privacy" className="transition hover:text-foreground">
+            Privacy Policy
+          </a>
+          <span className="hidden sm:inline">·</span>
+          <a href="/terms" className="transition hover:text-foreground">
+            Terms of Service
+          </a>
+        </footer>
       </div>
     </main>
   );

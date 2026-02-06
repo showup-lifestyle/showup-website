@@ -1,5 +1,6 @@
 services:
-  showup-website:
+  website:
+    container_name: showup-website
     build:
       context: .
       dockerfile: Dockerfile
